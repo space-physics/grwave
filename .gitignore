@@ -1,3 +1,6 @@
+*.asc
+*.out
+
 grwave
 
 # Byte-compiled / optimized / DLL files
