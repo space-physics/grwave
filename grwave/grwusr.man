@@ -1,0 +1,293 @@
+                       GRWAVE User's Manual
+
+                    Personal Computer Version
+
+                               CCIR
+
+                           Geneva, 1990
+
+
+
+Computer Requirements: 
+
+    The PC version of GRWAVE requires an IBM PC/AT or equivalent 
+(80286 microprocessor) with a math co-processor and a minimum of 
+256 kilobytes of memory. 
+
+Disk Contents: 
+
+         GRWAVE is supplied on a 3.5" or 5.25" disk which 
+contains three main files.  These are GRWAVE.EXE, GRWAVE.FOR 
+and GRWUSR.MAN.  GRWAVE.EXE is executable machine language code. 
+GRWAVE.FOR is the FORTRAN source code.  Compilation of this 
+source code to produce an executable code requires a FORTRAN 
+compiler which supports double precision complex arithmetic.  
+Microsoft FORTRAN Version 4.01 was used to compile and link 
+GRWAVE.FOR to produce GRWAVE.EXE.  Compilation has also been 
+tested with Lahey FORTRAN F77L [*].  It is known the IBM 
+Professional FORTRAN will not work because of a lack of support 
+for double precision complex arithmetic. 
+
+     [*] Note: GRWAVE uses a function, DREAL, which is not an 
+intrinsic function of the basic Fortran 77.  It is an extended 
+function in Microsoft FORTRAN but, it is unsupported in Lahey 
+FORTRAN.  Lahey FORTRAN does support the complimentary function 
+DIMAG.  DREAL computes the double precision real part (REAL*8) of 
+a double precision complex number (COMPLEX*16).  For the purpose 
+of uniformity, FORTRAN coding for a user defined function, DREAL, 
+has been added at the end of source code for GRWAVE.  The 
+statements have been "commented out" in the version supplied on 
+the diskette.  If necessary, they may be made active by removing 
+the appropriate comment line indicators (the letter 'C') in the 
+first column of line of code. 
+     
+     GRWUSR.MAN contains the text of this users guide. 
+
+Running GRWAVE.EXE: 
+
+ 1.  Issue the appropriate DOS commands to change the default 
+ directory to the directory containing GRWAVE.EXE. 
+
+ 2.  Type GRWAVE and strike the enter key. 
+
+ 3.  The screen will clear and the program will wait for user 
+ input. Refer to the input guide below for information on how to 
+ change or enter the desired input variables.  The program can be 
+ tested with the default values by typing "GO" (without the 
+ quotation marks and followed by striking the ENTER key).  The 
+ default variables are for 1 MHz over sea water, vertical 
+ polarization, from 10km to 200km in 10km steps with terminal 
+ heights of 50m and 100m. 
+
+ 4.  An output header will immediately appear on the screen. 
+ Computational output will be delayed until all calculations have 
+ been complete.  This may take as long as three minutes with the 
+ default input variables. 
+
+
+ 5.  Default output is to the computer screen.  Default input is 
+ from the keyboard.  Output may be directed to a printer by 
+ starting the program with the DOS command: 
+
+            GRWAVE >PRN 
+
+     Output may also be sent to a disk file.  For example, if it 
+is desired to have the output stored on file with the name 
+"GRWAVE.OUT", start the program with the command: 
+
+                  GRWAVE >GRWAVE.OUT
+
+     Input variables may also be obtained from a previously 
+created file which contains the information in the form required 
+for keyboard input.  In the following example, GRWAVE is 
+instructed to obtain the input variables from a file named 
+"MFB.DAT" and send its output to the printer. 
+
+                  GRWAVE <MFB.DAT >PRN 
+
+ 6.  To terminate the program, type the word 'STOP' and strike 
+ the enter key.  The PC will then return to the usual DOS prompt 
+ or DOS shell if one is being employed. 
+
+ Compiler Bug: 
+
+     At this time there appears to be a "bug" in the Microsoft 
+FORTRAN 4.01 compiler.  The problem occurs when GRWAVE is 
+compiled with the default optimization option.  When the program 
+terminates, DOS is unable to take control and the PC "hangs up" 
+in some indeterminate state.  After experimentation and 
+consultation with the Customer Support Service of Microsoft, it 
+was found that the problem does not exist when the code is 
+compiled with the "/Ot" optimization.  This option favors 
+execution speed.  Since this is desirable with a computationally 
+intensive program such as GRWAVE, no further work has been done 
+to identify the source of the problem. 
+
+Program modifications for the PC Version: 
+
+     Several modifications were made to the original GEC-Marconi 
+FORTRAN code for GRWAVE in order to create the PC version.  These 
+modifications fall into two categories.  The first category 
+consists of changes made to accommodate differences between the 
+PC compiler and the main frame computer at the ITU on which the 
+program had been executing.  These changes consisted primarily in 
+re-ordering COMMON, DIMENSION, type declaration and DATA 
+statements in order to meet the more restrictive requirements of 
+MS FORTRAN.  Several common blocks were modified such that the 
+same common block has the same size in each subprogram.  
+EQUIVALENCE statements were added to explicitly accomplish the 
+desired result which had previously been implemented with 
+variable length common blocks.  This required some renaming of 
+variables. 
+
+     The second category of modifications can be viewed as 
+program enhancements.  Three such modifications have been made.  
+
+
+1. Temporary Storage of DMIN: The standard mathematical 
+approximations used in GRWAVE place a lower limit on the minimum 
+distance between the terminals.  This is a dynamic limit which 
+depends on the frequency and the terminal heights.  GRWAVE 
+adjusts the minimum distance, DMIN, at which calculations are 
+made if certain limits are not met.  It was found that DIM was 
+not reset to the input value when it was necessary to modify DMIN 
+in the geometrical optics region calculations.  Since the input 
+value of DMIN may be valid for the next case, additional code was 
+added to restore DMIN to the input value after the geometrical 
+optics calculations for a given case were completed. 
+
+2.  Location of "debug" output: GRWAVE has an option to write 
+intermediate results of the calculation to the standard output 
+device with two levels of detail.  Refer to the 'IDEBUG' option 
+in the input guide section.  These intermediate output statements 
+were modified to indicate their approximate location by 
+subroutine name and line number in the FORTRAN source code.  
+These locations are approximate because of later changes to the 
+source code.  The indicated location should be within a few lines 
+of the actual "WRITE" statement which produces the output. 
+
+3.  Elimination of redundant height gain calculations: In the 
+residue region calculations, the height gain is calculated first 
+for all terminal heights.  This is a time intensive process.  It 
+was found that these calculations were being repeated for all 
+terminal heights each time the field was being calculated for a 
+specific pair of terminal heights.  The code was modified to 
+eliminate the recalculation of the height gain terms unless the 
+frequency or ground constants are changed.  This resulted in a 
+substantial reduction in execution time for cases with several 
+pairs of terminal height.   
+
+
+Guide to Input Variables 
+
+        GRWAVE uses a number of variables to control the 
+calculations and the operation of the computer code.  Each 
+variable has an initial default value.  The user may change any 
+variable by typing a keyword which is associated with the 
+variable, a numerical value and the "ENTER" key.  A list of the 
+keywords and a description of the variable is given below.  Each 
+keyword is followed by a letter which indicates that the variable 
+is real (R) or integer (I) number. 
+
+IDEBUG:[I]   This variable controls the amount of output and is 
+             used for programming purposes.  If IDEBUG=0 only 
+             principal results are given.  If IDEBUG=1 some 
+             intermediate results are given.  IT IDEBUG=2 full 
+             comprehensive output is given for diagnostic 
+             purposes. Default IDEBUG=0 
+
+
+ANS:  [R]  The refractivity of the troposphere at the surface of 
+             the earth in N-units.
+             Default ANS= 315 
+
+HSCALE:[R] The scale height of the troposphere in kilometres.
+             Default HSCALE = 7.35.
+
+IPOLRN:[I] A code number for the polarization. It has a value
+             of 1 for vertical polarization and a value of 2 for 
+             horizontal polarization. 
+             Default IPOLRN = 1.
+
+FREQ: [R]  The frequency in MHz.
+             Default FREQ = 1.0.
+
+EPSLON:[R] The relative permittivity of the surface of the earth. 
+             Default EPSLON = 70.0 (sea).
+
+SIGMA:[R]  The conductivity of the surface of the earth in S/m.
+             Default SIGMA = 5.0 (sea).
+
+DMIN: [R]  The minimum range in kilometres.
+             Default DMIN = 10.0.
+
+DMAX: [R]  The maximum range in kilometres.
+             Default DMAX = 200.0.
+
+DSTEP:[R]  The range step. See LOGLIN for further explanation.
+             Default DSTEP = 10.0.
+
+LOGLIN:[I] If LOGLIN = 0 then DSTEP, the range step is 
+             added to the range in geometrical and extended flat 
+             earth calculation regions and subtracted in the 
+             residue series regions.  If LOGLIN = 1 then the new 
+             distance is computed by multiplying or dividing the 
+             previous distance by DSTEP.  In this case, DSTEP is 
+             chosen to give a fixed number of points per 
+             logarithmic decade.  If N points per logarithmic 
+             decade are desired, DSTEP is equal to 10 to the 
+             power (1/N). Default LOGLIN = 0. 
+
+             [Note: In the residue series region, the 
+             calculations begin at DMAX and proceed inward to the 
+             transition to the flat earth or geometrical region.  
+             In these two regions, the calculations begin at DMIN 
+             and proceed outward to the transition point.  In the 
+             form distributed, GRWAVE allows a maximum of 100 
+             points in the residue region and 100 points in the 
+             flat earth region.  These limits may be expanded by
+             compiling the source code after modification of the 
+             appropriate dimension statements.] 
+
+IG:   [I]  If IG = -1 or 0, the field is calculated at long 
+             distances using the residue series formulation.  If 
+             IG = 0 or 1, the field is calculated at short 
+             distances using the geometric optics or extended 
+             flat earth formulation. Default IG = 0. 
+
+JHT:  [I]  A variable which determines which combination of 
+             receiver antenna heights (HR(LR) LR=1,JR) and 
+             transmitter heights (HT(LT) LT=1,JT) is used in 
+             computing the field.  If JHT=1, all possible 
+             combinations of pairs are used.  If JHT=2, JR must 
+             equal JT and the field is calculated for specific 
+             pairs of heights [HR(1),HT(1)], [HR(2),HT(2)], 
+             .......[HR(JR),HT(JT)].  If JHT=3, JR must equal JT. 
+             Then LR is varied from 1 to LR while LT is varied 
+             from LR to LT.  If the two arrays HR and HT are 
+             identical, this excludes those combinations that can 
+             be found by reciprocity. Default JHT = 1 
+
+HRR:  [R]  An array of of up to 20 receiver heights in metres. 
+             The number of points, JR is determined by the 
+             program by counting the number of heights entered.  
+             Default JR =1 ; HR(1)=100.0 
+ 
+HTT:  [R]  An array of of up to 20 transmitter heights in metres. 
+             The number of points, JT is determined by the 
+             program by counting the number of heights entered.  
+             Default JT =1 ; HT(1)=100.0 
+
+GO:        A keyword used to indicate that the user has entered  
+             all variables and that the calculation of the field 
+             should proceed. 
+
+STOP:      A keyword used to indicate that all calculations are 
+             complete and control of the computer should return 
+             to the operating system. 
+
+/:         A keyword which causes the program to ignore the 
+             rest of the input line.  This is useful when the 
+             input is read from a file and the users wishes to 
+             insert comments in the input file. 
+
+    The following is an example of the variables required to 
+calculate the field over medium ground for horizontal 
+polarization at 100 MHz for all combinations of antenna heights 
+of 1, 5, 10 and 50 metres and then repeat the calculations for 
+vertical polarization at 150 MHz. 
+
+JHT 3
+HRR 1 5 10 50
+HTT 1 5 10 50
+IPOLRN 2
+FREQ 100
+EPSLON 15
+SIGMA 0.001
+GO
+/ New case. Change frequency and polarization
+FREQ 150.
+IPOLRN 1
+GO
+STOP 
+

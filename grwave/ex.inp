@@ -1,0 +1,18 @@
+/ Example input file 
+HTT 9 
+HRR 2.5
+IPOLRN 1
+FREQ 6
+SIGMA 0.01
+EPSLON 30
+dmin 1
+dmax  200
+dstep 5
+go
+ipolrn 2
+go
+freq 30
+ipolrn 1
+go
+ipolrn 2
+go
