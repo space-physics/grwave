@@ -16,7 +16,8 @@ Usage
 
     python RunGRwave.py
     
-This makes a very simple simulation plot, automatically feeding the parameters into GRWAVE from Python.
+This makes a very simple simulation plot, automatically feeding the parameters into GRWAVE from Python. 
+No files are used, just ``io.StringIO``.
 
 
 
