@@ -4,11 +4,19 @@ python-grwave
 
 Python for ITU P.368: Ground-wave propagation curves for frequencies between 10 kHz and 30 MHz
 
-Build
+Install
+=====
+This also compiles the Fortran code using ``gfortran``::
+  
+    python -m pip install -e .
+    
+Usage
 =====
 ::
-  
-    gfortran fortran/grwave.for -o grwave
+
+    python RunGRwave.py
+    
+This makes a very simple simulation plot, automatically feeding the parameters into GRWAVE from Python.
 
 
 

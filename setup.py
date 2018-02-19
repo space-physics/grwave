@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-install_requires=[]
+install_requires=['numpy','folium','pandas','matplotlib','seaborn']
 tests_require=['nose','coveralls']
 # %%
+import subprocess
 from setuptools import setup,find_packages
 
 setup(name='pygrwave',
@@ -19,3 +20,5 @@ setup(name='pygrwave',
                       'plot':['matplotlib','seaborn',],},
       python_requires='>=3.6',
    )
+   
+subprocess.check_call(['gfortran','fortran/grwave.for','-o','grwave'])
