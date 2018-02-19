@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-install_requires=['numpy','folium','pandas','matplotlib','seaborn']
+install_requires=['numpy','pandas']
 tests_require=['nose','coveralls']
 # %%
 import subprocess
@@ -17,7 +17,8 @@ setup(name='pygrwave',
       install_requires=install_requires,
       tests_require=tests_require,
       extras_require={'tests':tests_require,
-                      'plot':['matplotlib','seaborn',],},
+                      'plot':['matplotlib','seaborn',],
+                      'io':['folium',]},
       python_requires='>=3.6',
    )
    

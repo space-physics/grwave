@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/scivision/python-grwave.svg?branch=master
+    :target: https://travis-ci.org/scivision/python-grwave
+
 =============
 python-grwave
 =============

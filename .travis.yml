@@ -1,0 +1,28 @@
+language: python
+fast_finish: true
+
+python:
+  - 3.6
+
+os:
+  - linux
+
+  
+env: FC=gfortran
+
+group: travis_latest
+
+
+git:
+  depth: 3
+
+addons:
+  apt:
+    packages:
+      - gfortran
+  
+
+install: python -m pip install -e .[tests]
+
+script: python tests/test_all.py
+
