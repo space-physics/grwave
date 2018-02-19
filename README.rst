@@ -4,6 +4,8 @@ python-grwave
 
 Python for ITU P.368: Ground-wave propagation curves for frequencies between 10 kHz and 30 MHz
 
+.. image:: data/fs.png
+
 Install
 =====
 This also compiles the Fortran code using ``gfortran``::
