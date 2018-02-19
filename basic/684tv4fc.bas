@@ -1,17 +1,17 @@
-100 ' #######################################################################
-110 '
-120 '    Temporal variation in LF field strength and phase to be received
-130 '    at a point based on wave hop method in Rec. ITU-R P. 684
-140 '                               by
-150 '                             N. Wakai
-160 '                                              (684TV4FC.BAS)  Oct. 2005
-170 ' #######################################################################
-180 '
-190 '  This program is applicable for calculating temporal variation in
-200 '  field strength and phase to be received at a point from 100 km to
-210 '  4000 km at frequencies between 40 and 500 kHz.
-220 '                                       (parabolic D/E layer model)
-230 '
+100 REM #######################################################################
+110 REM
+120 REM    Temporal variation in LF field strength and phase to be received
+130 REM    at a point based on wave hop method in Rec. ITU-R P. 684
+140 REM                               by
+150 REM                             N. Wakai
+160 REM                                              (684TV4FC.BAS)  Oct. 2005
+170 REM #######################################################################
+180 REM
+190 REM  This program is applicable for calculating temporal variation in
+200 REM  field strength and phase to be received at a point from 100 km to
+210 REM  4000 km at frequencies between 40 and 500 kHz.
+220 REM                                       (parabolic D/E layer model)
+230 REM
 240 CLS
 250 REM #INCLUDE "windows.bi"
 260 DEFDBL A-C,E,G-H,O-Z
@@ -20,7 +20,7 @@
 290 RTD=180/PAI :DTR=PAI/180
 300 RE=6367*4/3
 310 DIM F(8),D(16),FG(10),DG(19),GW(10,19),FF(8,16),PS(13),AF(8,13),FCS(15),CSX(11),RCX(11,15),LT(2000),FS(2000),DPHAS(2000)
-320 '
+320 REM
 330 CLS 3
 340 PRINT
 350 INPUT "input radiation power in kW";P
@@ -31,8 +31,8 @@
 400 INPUT "input latitude of receiver in degree and its decimals with - for southern latitude";LATR
 410 INPUT "input longitude of receiver in degree and its decimals with -for western longitude";LONR
 420 LATT=LATT*DTR: LONT=LONT*DTR: LATR=LATR*DTR: LONR=LONR*DTR
-430 '
-440 ' ground range calculation
+430 REM
+440 REM ground range calculation
 450 GOSUB 2570 REM *GRANGE
 460 PRINT
 470 PRINT USING "Ground range: ####.## km";GR
@@ -47,32 +47,32 @@
 560 PRINT
 570 PRINT USING "Latitude and longitude at path mid-point: ###.##  and ####.##";LATP,LONP
 580 INPUT "input ground condition at mid-point, 1 for sea water or                                                              2 for land or                                                                   3 for dry ground";GCM
-590 '
-600 '  ground-wave
+590 REM
+600 REM  ground-wave
 610 GOSUB 4950 REM *GWAVE
 620 G=10^(GWS/20)*.001
-630 '
+630 REM
 640 INPUT "input solar activity epoch, 1 for minimum sunspot number or                                                 2 for medium sunspot number or                                                  3 for maximum sunspot number";YR
 650 INPUT "input month, 1 for January, or 2 for February or to 12 for December";MON
 660 IF MON=1 THEN SOL=-21 ELSE IF MON=2 THEN SOL=-13 ELSE IF MON=3 THEN SOL=-2 ELSE IF MON=4 THEN SOL=10 ELSE IF MON=5 THEN SOL=19 ELSE IF MON=6 THEN SOL=23
 670 IF MON=7 THEN SOL=22 ELSE IF MON=8 THEN SOL=14 ELSE IF MON=9 THEN SOL=3 ELSE IF MON=10 THEN SOL=-8 ELSE IF MON=11 THEN SOL=-18 ELSE IF MON=12 THEN SOL=-23
-680 '
+680 REM
 690 INPUT "input local standard time meridian longitude in degree, + for east,                                                                     - for west";LSTM
-700 '
+700 REM
 710 OPEN "c:\lftempv.dat" AS #1 :CLOSE #1 :KILL "c:\lftempv.dat"
 720 OPEN "c:\lftempv.dat" FOR OUTPUT AS #1
 730 INPUT "input start and end of local time at receiver and step of variation in hours as 5,12,0.5(>=0.05)";TS,TE,TINT
 740 J=1
 750 FOR I=TS TO TE STEP TINT
 760 LT(J)=I
-770 '
-780 '  reflection height
+770 REM
+780 REM  reflection height
 790 GOSUB *REFH
-800 '
+800 REM
 810 FOR K=1 TO 2
 820 HOP=K
 830 IF HOP=1 THEN HOPL=GR ELSE HOPL=GR/2
-840 '  ray path length, elevation and incidence angles and delay
+840 REM  ray path length, elevation and incidence angles and delay
 850 PL=2*SQR(RE*RE+(RE+HR)^2-2*RE*(RE+HR)*COS(HOPL/2/RE))
 860 PSI=ATN(1/TAN(HOPL/2/RE)-RE/(RE+HR)/SIN(HOPL/2/RE))
 870 INC=PAI/2-HOPL/2/RE-PSI
@@ -80,8 +80,8 @@
 890 DTIM=HOP*(PL-HOPL)/VEL*10^6
 900 DPH=(HOP*(PL-HOPL)/LAMD-INT(HOP*(PL-HOPL)/LAMD))*360
 910 IF HOP=1 THEN DPH1=DPH ELSE DPH2=DPH
-920 '
-930 '  focusing factor
+920 REM
+930 REM  focusing factor
 940 RESTORE 4170
 950 FOR M=1 TO 8:READ F(M):NEXT M
 960 FOR N=1 TO 16 :READ D(N):NEXT N
@@ -92,8 +92,8 @@
 1010 NEXT N
 1020 NEXT M
 1030 GOSUB *INTFF
-1040 '
-1050 '  transmitting antenna factor
+1040 REM
+1050 REM  transmitting antenna factor
 1060 PSI=PSI*RTD
 1070 RESTORE 4280
 1080 FOR M=1 TO 13
@@ -110,8 +110,8 @@
 1190 NEXT M
 1200 GOSUB *INTAF
 1210 FT=ANT
-1220 '
-1230 '  receiving antenna factor
+1220 REM
+1230 REM  receiving antenna factor
 1240 IF GCR=1 THEN GOTO 1250 ELSE IF GCR=2 THEN GOTO 1260 ELSE GOTO 1270
 1250 RESTORE 4290 :GOTO 1280
 1260 RESTORE 4380 :GOTO 1280
@@ -123,8 +123,8 @@
 1320 NEXT M
 1330 GOSUB *INTAF
 1340 FR=ANT
-1350 '
-1360 ' ionospheric reflection coefficient
+1350 REM
+1360 REM ionospheric reflection coefficient
 1370 RESTORE 4550
 1380 FOR M=1 TO 11
 1390 READ CSX(M)
@@ -143,8 +143,8 @@
 1520 NEXT N
 1530 NEXT M
 1540 GOSUB *INTRC
-1550 '
-1560 '  reflection coefficient of ground
+1550 REM
+1560 REM  reflection coefficient of ground
 1570 PSI=PSI*DTR
 1580 IF PSI<.02 THEN GOTO 1750
 1590 IF HOP=1 THEN GOTO 1770
@@ -164,8 +164,8 @@
 1730 IF ROH-(EPS^2+X*X)*SIN(PSI)^2<0 THEN PHAS=-ATN(2*SQR(ROH)*SQR(EPS^2+X*X)*SIN(PSI)*SIN(ATN(X/EPS)+A/2)/(ROH-(EPS^2+X*X)*SIN(PSI)^2))
 1740 GOTO 1760
 1750 RG=1 :PHAS=0
-1760 '
-1770 '  skywave field strength
+1760 REM
+1770 REM  skywave field strength
 1780 VU=300*SQR(P)
 1790 IF HOP=2 THEN GOTO 1830
 1800 EL1=2*VU/PL*COS(PSI)*RC*FOC*FT*FR
@@ -174,11 +174,11 @@
 1830 EL2=2*VU/PL/2*COS(PSI)*RC*RC*RG*FOC*FT*FR
 1840 FS2=20*LOG(EL2*1000)/LOG(10)
 1850 NEXT K
-1860 '
-1870 '  ground-wave and resultant field strength
+1860 REM
+1870 REM  ground-wave and resultant field strength
 1880 GOSUB 4950 REM *GWAVE
 1890 G=10^(GWS/20)*.001
-1900 '
+1900 REM
 1910 DPH1=DPH1*DTR :DPH2=DPH2*DTR
 1920 RLG=SQR(EL1^2+G^2+2*EL1*G*COS(DPH1))
 1930 SINSK=EL1*SIN(DPH1)/RLG
@@ -195,8 +195,8 @@
 2040 DPHAS=D12G+SK
 2050 IF DPHAS>2*PAI THEN DPHAS=DPHAS-INT(DPHAS/2/PAI)*2*PAI
 2060 DPHAS(J)=DPHAS*RTD*.1
-2070 '
-2080 '
+2070 REM
+2080 REM
 2090 PRINT #1, USING "  ##.##   ###.##   ###.##";LT(J),FS(J),DPHAS(J)
 2100 J=J+1
 2110 NEXT I
@@ -243,8 +243,8 @@
 2520 IF Q$="Y" OR Q$="y" THEN GOTO 340
 2530 STOP
 2540 END
-2550 '
-2560 ' ground range calculation
+2550 REM
+2560 REM ground range calculation
 2570 REM *GRANGE
 2580 DIFL=ABS(LONT-LONR)
 2590 IF DIFL>PAI THEN DIFL=2*PAI-DIFL
@@ -253,8 +253,8 @@
 2620 CA=ATN(CASIN/CACOS)
 2630 IF CA<0 THEN CA=CA+PAI
 2640 GR=CA*6367
-2650 '
-2660 '  reflection point coordinate
+2650 REM
+2660 REM  reflection point coordinate
 2670 PCOS=COS(CA/2)*SIN(LATT)+SIN(CA/2)*COS(LATT)*(SIN(LATR)-SIN(LATT)*COS(CA))/COS(LATT)/SIN(CA)
 2680 PSIN=SQR(1-PCOS^2)
 2690 IF PSIN/PCOS<0 THEN LATP=-PAI/2-ATN(PSIN/PCOS) ELSE LATP=PAI/2-ATN(PSIN/PCOS)
@@ -264,8 +264,8 @@
 2730 IF LONT>0 AND LONT<PAI THEN LONP=LONT+ATN(QSIN/QCOS) ELSE LONP=LONT-ATN(QSIN/QCOS)
 2740 LATP=LATP*RTD :LONP=LONP*RTD
 2750 RETURN
-2760 '
-2770 '  reflection height subroutine
+2760 REM
+2770 REM  reflection height subroutine
 2780 *REFH
 2790 IF YR=1 THEN SSN=13 ELSE IF YR=2 THEN SSN=50 ELSE IF YR=3 THEN SSN=100
 2800 PHI=SSN+46-23*EXP(-.05*SSN)
@@ -306,8 +306,8 @@
 3150 GOTO 3170
 3160 HR=100
 3170 RETURN
-3180 '
-3190 '  focusing factor subroutine
+3180 REM
+3190 REM  focusing factor subroutine
 3200 *INTFF
 3210 FOR N=1 TO 16
 3220 IF HOPL=D(N) THEN GOTO 3390
@@ -327,7 +327,7 @@
 3360 FFM2=FF(M+1,N)+(FF(M+1,N+1)-FF(M+1,N))*(HOPL-D(N))/(D(N+1)-D(N))
 3370 FOC=FFM1+(FFM2-FFM1)*(FREQ-F(M))/(F(M+1)-F(M))
 3380 GOTO 3490
-3390 'FREQINT
+3390 REM FREQINT
 3400 FOR M=1 TO 8
 3410 IF FREQ=F(M) THEN GOTO 3460
 3420 NEXT M
@@ -338,8 +338,8 @@
 3470 GOTO 3490
 3480 FOC=FF(M,N)+(FF(M+1,N)-FF(M,N))*(FREQ-F(M))/(F(M+1)-F(M))
 3490 RETURN
-3500 '
-3510 '  antenna factor subroutine
+3500 REM
+3510 REM  antenna factor subroutine
 3520 *INTAF
 3530 FOR N=1 TO 13
 3540 IF PSI=PS(N) THEN GOTO 3710
@@ -359,7 +359,7 @@
 3680 AFM2=AF(M+1,N)+(AF(M+1,N+1)-AF(M+1,N))*(PSI-PS(N))/(PS(N+1)-PS(N))
 3690 ANT=AFM1+(AFM2-AFM1)*(FREQ-F(M))/(F(M+1)-F(M))
 3700 GOTO 3810
-3710 'freqint
+3710 REM freqint
 3720 FOR M=1 TO 8
 3730 IF FREQ=F(M) THEN GOTO 3780
 3740 NEXT M
@@ -370,8 +370,8 @@
 3790 GOTO 3810
 3800 ANT=AF(M,N)+(AF(M+1,N)-AF(M,N))*(FREQ-F(M))/(F(M+1)-F(M))
 3810 RETURN
-3820 '
-3830 '  ionospheric reflection coefficient subroutine
+3820 REM
+3830 REM  ionospheric reflection coefficient subroutine
 3840 *INTRC
 3850 FOR N=1 TO 15
 3860 IF FC=FCS(N) THEN GOTO 4030
@@ -404,7 +404,7 @@
 4130 RC=RCX(M,N)
 4140 RC=10^RC
 4150 RETURN
-4160 '
+4160 REM
 4170 DATA 20,50,100,150,200,300,400,500
 4180 DATA 50,200,400,800,1000,1200,1400,1500,1600,1700,1800,1900,2000,2500,3000,4000
 4190 DATA 1,1.02,1.06,1.2,1.29,1.40,1.53,1.58,1.61,1.64,1.66,1.68,1.70,1.89,1.89,1.89
@@ -415,7 +415,7 @@
 4240 DATA 1,1.02,1.06,1.2,1.32,1.52,1.76,1.90,2.07,2.25,2.40,2.50,2.60,2.89,2.89,2.89
 4250 DATA 1,1.02,1.06,1.2,1.32,1.52,1.76,1.90,2.07,2.25,2.40,2.50,2.60,2.89,2.89,2.89
 4260 DATA 1,1.02,1.06,1.2,1.32,1.52,1.76,1.90,2.07,2.25,2.40,2.50,2.60,2.89,2.89,2.89
-4270 '
+4270 REM
 4280 DATA 80,15,10,7.5,5,3.75,2.5,1.25,0,-1.25,-2.5,-5,-7.5
 4290 DATA 1,1,1,0.98,0.95,0.91,0.87,0.8,0.70,0.60,0.50,0.33,0.22
 4300 DATA 1,1,1,0.98,0.95,0.91,0.87,0.8,0.70,0.575,0.447,0.263,0.14
@@ -425,7 +425,7 @@
 4340 DATA 1,1,1,0.98,0.95,0.91,0.87,0.8,0.636,0.48,0.29,0.088,0.025
 4350 DATA 1,1,1,0.98,0.95,0.91,0.87,0.8,0.626,0.46,0.26,0.07,0.02
 4360 DATA 1,1,1,0.98,0.95,0.91,0.87,0.8,0.617,0.44,0.24,0.06,0.016
-4370 '
+4370 REM
 4380 DATA 0.95,0.95,0.92,0.90,0.83,0.8,0.75,0.68,0.6,0.525,0.44,0.3,0.2
 4390 DATA 0.92,0.92,0.87,0.8,0.74,0.7,0.63,0.575,0.48,0.4,0.33,0.2,0.12
 4400 DATA 0.81,0.81,0.79,0.75,0.68,0.616,0.52,0.457,0.35,0.26,0.18,0.076,0.027
@@ -434,7 +434,7 @@
 4430 DATA 0.7,0.7,0.65,0.64,0.55,0.47,0.37,0.26,0.16,0.08,0.034,0.0035,0.0004
 4440 DATA 0.65,0.65,0.62,0.61,0.52,0.44,0.34,0.24,0.14,0.06,0.02,0.0016,0.0001
 4450 DATA 0.6,0.6,0.6,0.58,0.5,0.417,0.33,0.23,0.13,0.05,0.013,0.0008,0.00004
-4460 '
+4460 REM
 4470 DATA 0.9,0.89,0.83,0.79,0.72,0.68,0.63,0.57,0.51,0.45,0.38,0.26,0.17
 4480 DATA 0.8,0.79,0.73,0.67,0.6,0.54,0.47,0.4,0.33,0.25,0.18,0.09,0.041
 4490 DATA 0.7,0.69,0.65,0.6,0.51,0.45,0.38,0.3,0.22,0.13,0.073,0.02,0.0045
@@ -442,10 +442,10 @@
 4510 DATA 0.53,0.52,0.5,0.46,0.40,0.35,0.28,0.20,0.12,0.06,0.025,0.0035,0.00041
 4520 DATA 0.46,0.45,0.44,0.41,0.36,0.31,0.25,0.17,0.09,0.038,0.013,0.0013,0.00014010 DATA 0.4,0.39,0.38,0.37,0.33,0.28,0.22,0.15,0.07,0.026,0.008,0.00068,0.00005
 4530 DATA 0.34,0.34,0.34,0.33,0.3,0.26,0.20,0.13,0.06,0.02,0.006,0.00043,0.00003
-4540 '
+4540 REM
 4550 DATA -1,-0.5,-0.35,-0.21,0,0.2,0.375,0.55,0.707,0.85,1
 4560 DATA 5,8,10,15,20,30,40,50,75,100,150,200,300,400,500
-4570 ' ssn min
+4570 REM ssn min
 4580 DATA -0.33,-0.34,-0.35,-0.36,-0.4,-0.47,-0.52,-0.56,-0.64,-0.7,-0.76,-0.76,-0.72,-0.66,-0.6
 4590 DATA -0.33,-0.34,-0.35,-0.36,-0.4,-0.47,-0.52,-0.56,-0.64,-0.7,-0.76,-0.76,-0.72,-0.66,-0.6
 4600 DATA -0.33,-0.34,-0.35,-0.39,-0.44,-0.53,-0.61,-0.67,-0.79,-0.85,-0.91,-0.91,-0.87,-0.81,-0.76
@@ -457,7 +457,7 @@
 4660 DATA -0.52,-0.54,-0.59,-0.83,-1.05,-1.4,-1.64,-1.8,-2.1,-2.3,-2.58,-2.75,-2.92,-3.03,-3.1
 4670 DATA -0.6,-0.66,-0.74,-1.03,-1.4,-1.81,-2.02,-2.2,-2.54,-2.82,-3.1,-3.26,-3.24,-3.21,-3.18
 4680 DATA -0.76,-0.8,-0.9,-1.46,-2,-2.9,-3.45,-3.7,-3.93,-3.99,-3.97,-3.87,-3.66,-3.41,-3.2
-4690 ' ssn med
+4690 REM ssn med
 4700 DATA -0.3,-0.31,-0.32,-0.33,-0.37,-0.43,-0.47,-0.51,-0.58,-0.64,-0.71,-0.73,-0.76,-0.76,-0.75
 4710 DATA -0.3,-0.31,-0.32,-0.33,-0.37,-0.43,-0.47,-0.51,-0.58,-0.64,-0.71,-0.73,-0.76,-0.76,-0.75
 4720 DATA -0.3,-0.31,-0.32,-0.36,-0.41,-0.49,-0.56,-0.61,-0.71,-0.76,-0.84,-0.87,-0.89,-0.88,-0.88
@@ -469,7 +469,7 @@
 4780 DATA -0.49,-0.51,-0.56,-0.77,-0.99,-1.32,-1.57,-1.75,-2.1,-2.35,-2.66,-2.84,-3.01,-3.13,-3.2
 4790 DATA -0.57,-0.62,-0.7,-0.97,-1.33,-1.81,-2.07,-2.3,-2.68,-2.94,-3.19,-3.31,-3.34,-3.35,-3.33
 4800 DATA -0.72,-0.77,-0.86,-1.31,-1.9,-2.74,-3.23,-3.5,-3.85,-3.95,-3.98,-3.92,-3.76,-3.58,-3.42
-4810 ' ssn max
+4810 REM ssn max
 4820 DATA -0.27,-0.27,-0.28,-0.3,-0.34,-0.38,-0.42,-0.46,-0.52,-0.57,-0.65,-0.7,-0.8,-0.85,-0.89
 4830 DATA -0.27,-0.27,-0.28,-0.3,-0.34,-0.38,-0.42,-0.46,-0.52,-0.57,-0.65,-0.7,-0.8,-0.85,-0.89
 4840 DATA -0.27,-0.27,-0.28,-0.32,-0.37,-0.44,-0.5,-0.55,-0.62,-0.67,-0.76,-0.82,-0.91,-0.95,-1.01
@@ -481,8 +481,8 @@
 4900 DATA -0.45,-0.48,-0.52,-0.7,-0.92,-1.24,-1.5,-1.7,-2.09,-2.4,-2.73,-2.92,-3.1,-3.22,-3.3
 4910 DATA -0.54,-0.58,-0.65,-0.9,-1.25,-1.8,-2.11,-2.4,-2.81,-3.06,-3.28,-3.36,-3.43,-3.48,-3.48
 4920 DATA -0.67,-0.74,-0.82,-1.15,-1.8,-2.58,-3,-3.3,-3.75,-3.9,-3.98,-3.97,-3.85,-3.74,-3.64
-4930 '
-4940 ' Ground Wave field strength based on Rec. P.368
+4930 REM
+4940 REM Ground Wave field strength based on Rec. P.368
 4950 REM *GWAVE
 4960 RESTORE 5570
 4970 FOR M=1 TO 10 :READ FG(M) :NEXT M
@@ -511,7 +511,7 @@
 5200 GOTO *INTGW
 5210 GWS=GWS+10*LOG(P)/LOG(10)
 5220 RETURN
-5230 '
+5230 REM
 5240 *INTGW
 5250 FOR N=1 TO 19
 5260 IF GR=DG(N) THEN GOTO 5440
@@ -527,12 +527,12 @@
 5360 NEXT M
 5370 GWS=GW(M,N)+(GW(M,N+1)-GW(M,N))*(GR-DG(N))/(DG(N+1)-DG(N))
 5380 GOTO 5540
-5390 'distance interpolation
+5390 REM distance interpolation
 5400 GWM1=GW(M,N)+(GW(M,N+1)-GW(M,N))*(GR-DG(N))/(DG(N+1)-DG(N))
 5410 GWM2=GW(M+1,N)+(GW(M+1,N+1)-GW(M+1,N))*(GR-DG(N))/(DG(N+1)-DG(N))
 5420 GWS=GWM1+(GWM2-GWM1)*(FREQ-FG(M))/(FG(M+1)-FG(M))
 5430 GOTO 5540
-5440 'frequency interpolation
+5440 REM frequency interpolation
 5450 FOR M=1 TO 10
 5460 IF FREQ=FG(M) THEN GOTO 5510
 5470 NEXT M
@@ -543,11 +543,11 @@
 5520 GOTO 5540
 5530 GWS=GW(M,N)+(GW(M+1,N)-GW(M,N))*(FREQ-FG(M))/(FG(M+1)-FG(M))
 5540 GOTO 5210
-5550 '
-5560 'ground wave field strength data
+5550 REM
+5560 REM ground wave field strength data
 5570 DATA 20,40,50,75,100,150,200,300,400,500
 5580 DATA 50,100,150,200,300,400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,3000,4000
-5590 '
+5590 REM
 5600 DATA 75,69,65.2,62.7,58.7,55.9,53,51,49,47.5,46,44,41,37.5,34,31,27.5,13,-1
 5610 DATA 75,68.8,65,62.5,58.4,55.5,52.5,50.1,48.2,45.8,43.9,42,38,34,30.2,26.3,22.5,5,-11.5
 5620 DATA 75,68.7,64.9,62.2,58.1,55,51.7,49.1,47.1,44.8,42.9,41,36.5,32.5,28.5,24.5,20.4,1.5,-16
@@ -558,7 +558,7 @@
 5670 DATA 75,68.2,64.1,61.2,56.6,52,47.9,44.1,41.1,38.3,35.4,32,26.2,20,13.7,7.5,1,-27.5,-52
 5680 DATA 75,68.1,63.9,61,56.3,51.5,47.2,43.1,39.9,36.8,33.6,30,23,16.5,9.6,3,-4,-35,-62
 5690 DATA 75,68,63.8,60.8,56,51,46.5,42.1,38.7,35.3,31.9,27.5,20.3,13.3,6.5,-0.5,-7.5,-42,-70
-5700 '
+5700 REM
 5710 DATA 75,69,65.1,62.5,59,55.5,53,50.5,49,47,45.2,43.5,40.5,37,34,31,28,14,0
 5720 DATA 74.8,68.6,64.9,62.2,58,55,52,49.5,47.4,45.5,43.2,41.3,37.5,33.5,30,26.5,22.5,5,-12
 5730 DATA 74.7,68.4,64.7,62,57.4,54,51.2,48.5,46,44,42,40,36,31.6,28,24,20,1,-17
@@ -569,7 +569,7 @@
 5780 DATA 71.5,61.7,54.4,49,40,32.5,26,19,13,7.5,1.5,-4,-15.5,-27.5,-37.5,-47,-55,-90,-120
 5790 DATA 68,57.2,48.8,42.5,32.5,24.2,17,10,2.5,-4.3,-11,-17.5,-30,-42.5,-53,-62,-71,-110,-145
 5800 DATA 65,52.5,43.3,37,27,17.7,10,2,-5.5,-13,-20,-28,-41,-53,-65,-75,-85,-125,-165
-5810 '
+5810 REM
 5820 DATA 74.5,68.5,64.7,62,57.5,54.5,51.5,49,47,45,43,41.2,37.7,34.3,31,27.7,24.5,9,-5.5
 5830 DATA 74,67.5,63.1,60,55,51,47,43.5,40.5,37,34.5,31.7,26.5,21.2,16.5,12,7,-17,-39
 5840 DATA 73.5,66,60.8,57.5,52.5,47.5,43.5,40,36.5,33.2,30,26.5,20,14,8,2.2,-3.5,-30,-57
