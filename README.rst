@@ -6,6 +6,8 @@ Python for ITU P.368: Ground-wave propagation curves for frequencies between 10 
 
 .. image:: data/fs.png
 
+.. contents::
+
 Install
 =====
 This also compiles the Fortran code using ``gfortran``::
@@ -24,7 +26,7 @@ No files are used, just ``io.StringIO``.
 
 
 Variables
-=========
+---------
 grwave.for is written in a way that's not easy to switch to taking Python input directly.
 Instead we convert variables to StringIO in the format grwave expects.
 Likewise, output is to StringIO and parsed.
