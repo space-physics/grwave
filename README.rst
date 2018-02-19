@@ -1,5 +1,8 @@
 .. image:: https://travis-ci.org/scivision/python-grwave.svg?branch=master
     :target: https://travis-ci.org/scivision/python-grwave
+    
+.. image:: https://coveralls.io/repos/github/scivision/python-grwave/badge.svg?branch=master
+    :target: https://coveralls.io/github/scivision/python-grwave?branch=master
 
 =============
 python-grwave

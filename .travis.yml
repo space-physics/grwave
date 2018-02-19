@@ -24,5 +24,7 @@ addons:
 
 install: python -m pip install -e .[tests]
 
-script: python tests/test_all.py
+script: coverage run tests/test_all.py -v
+
+after_success: coveralls
 
