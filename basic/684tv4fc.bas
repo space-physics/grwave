@@ -59,8 +59,8 @@
 680 REM
 690 INPUT "input local standard time meridian longitude in degree, + for east,                                                                     - for west";LSTM
 700 REM
-710 OPEN "c:\lftempv.dat" AS #1 :CLOSE #1 :KILL "c:\lftempv.dat"
-720 OPEN "c:\lftempv.dat" FOR OUTPUT AS #1
+710 OPEN "lftempv.dat" AS #1 :CLOSE #1 :KILL "lftempv.dat"
+720 OPEN "lftempv.dat" FOR OUTPUT AS #1
 730 INPUT "input start and end of local time at receiver and step of variation in hours as 5,12,0.5(>=0.05)";TS,TE,TINT
 740 J=1
 750 FOR I=TS TO TE STEP TINT
@@ -202,7 +202,7 @@
 2110 NEXT I
 2120 CLOSE #1
 2130 INPUT "input  1 for table output, or                                                          2 for graphic output";OPT
-2140 OPEN "c:\lftempv.dat" FOR INPUT AS #1
+2140 OPEN "lftempv.dat" FOR INPUT AS #1
 2150 IF OPT=1 THEN GOTO 2420
 2160 CONSOLE 0,24: WIDTH "scrn:",80
 2170 COLOR 0,15

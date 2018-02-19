@@ -1,8 +1,16 @@
+.pytest_cache/
+.mypy_cache/
+
+
+684dv4fc
+684tv4fc
+684fp4f
+*.dat
 *.html
 *.asc
 *.out
 
-grwave
+grwave.exe
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
