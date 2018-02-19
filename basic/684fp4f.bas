@@ -13,7 +13,7 @@
 220 '                                       (parabolic D/E layer model)
 230 '
 240 CLS
-250 #INCLUDE "windows.bi"
+250 REM #INCLUDE "windows.bi"
 260 DEFDBL A-C,E,G-H,O-Z
 270 PAI=3.14159265#
 280 VEL=2.99792458#*10^5
@@ -34,7 +34,7 @@
 430 LATT=LATT*DTR: LONT=LONT*DTR: LATR=LATR*DTR: LONR=LONR*DTR
 440 '
 450 ' ground range calculation
-460 GOSUB *GRANGE
+460 GOSUB 2330 REM *GRANGE
 470 PRINT
 480 PRINT USING "Ground range: ####.## km";GR
 490 IF GR<=4000 THEN GOTO 540
@@ -46,7 +46,7 @@
 550 INPUT "input ground condition at transmitter, 1 for sea water or                                                              2 for land or                                                                   3 for dry ground";GCT
 560 INPUT "input ground condition at receiver, 1 for sea water or                                                              2 for land or                                                                   3 for dry ground";GCR
 570 PRINT
-580 PRINT USING "Latitude and longitude at path mid-point: ###.##  and ####.##";LATP,LONP
+580 PRINT USING "Latitude and longitude at path mid-point: ###.##  and ####.##";LATP;LONP
 590 INPUT "input ground condition at mid-point, 1 for sea water or                                                              2 for land or                                                                   3 for dry ground";GCM
 600 '
 610 INPUT "input solar activity epoch, 1 for minimum sunspot number or                                                 2 for medium sunspot number or                                                  3 for maximum sunspot number";YR
@@ -58,7 +58,7 @@
 670 INPUT "input local standard time meridian longitude in degree, + for east,                                                                     - for west";LSTM
 680 '
 690 '  reflection height
-700 GOSUB *REFH
+700 GOSUB 2540 REM *REFH
 710 '
 720 FOR K=1 TO 2
 730 HOP=K
@@ -82,7 +82,7 @@
 910 READ FF(M,N)
 920 NEXT N
 930 NEXT M
-940 GOSUB *INTFF
+940 GOSUB 2960 REM *INTFF
 950 '
 960 '  transmitting antenna factor
 970 PSI=PSI*RTD
@@ -99,7 +99,7 @@
 1080 READ AF(M,N)
 1090 NEXT N
 1100 NEXT M
-1110 GOSUB *INTAF
+1110 GOSUB 3280 REM *INTAF
 1120 FT=ANT
 1130 '
 1140 '  receiving antenna factor
@@ -112,7 +112,7 @@
 1210 READ AF(M,N)
 1220 NEXT N
 1230 NEXT M
-1240 GOSUB *INTAF
+1240 GOSUB 3280 REM *INTAF
 1250 FR=ANT
 1260 '
 1270 ' ionospheric reflection coefficient
@@ -133,7 +133,7 @@
 1420 READ RCX(M,N)
 1430 NEXT N
 1440 NEXT M
-1450 GOSUB *INTRC
+1450 GOSUB 3600 REM *INTRC
 1460 '
 1470 '  reflection coefficient of ground
 1480 PSI=PSI*DTR
@@ -167,7 +167,7 @@
 1760 NEXT K
 1770 '
 1780 '  ground-wave and resultant field strength
-1790 GOSUB *GWAVE
+1790 GOSUB 4710 REM *GWAVE
 1800 G=10^(GWS/20)*.001
 1810 '
 1820 DPH1=DPH1*DTR :DPH2=DPH2*DTR
@@ -187,13 +187,13 @@
 1960 '
 1970 PRINT
 1980 PRINT
-1990 PRINT USING " Transmitter power: ###.# kW   Frequency: ###.## kHz";P,FREQ
-2000 PRINT USING " Latitude and longitude of transmitter: ###.##   ####.##";LATT*RTD,LONT*RTD
-2010 PRINT USING " Latitude and longitude of receiver: ###.##   ####.##";LATR*RTD,LONR*RTD
+1990 PRINT USING " Transmitter power: ###.# kW   Frequency: ###.## kHz";P;FREQ
+2000 PRINT USING " Latitude and longitude of transmitter: ###.##   ####.##";LATT*RTD;LONT*RTD
+2010 PRINT USING " Latitude and longitude of receiver: ###.##   ####.##";LATR*RTD;LONR*RTD
 2020 PRINT USING " Ground range: ####.## km";GR
 2030 PRINT
-2040 PRINT USING " Ground-wave field strength: ###.#### mV/m   ####.## dBuV/m";G,GWS
-2050 PRINT USING " Resultant field strength: ###.#### mV/m  ####.## dBuV/m at ##.# h";RL,RLDB,LT
+2040 PRINT USING " Ground-wave field strength: ###.#### mV/m   ####.## dBuV/m";G;GWS
+2050 PRINT USING " Resultant field strength: ###.#### mV/m  ####.## dBuV/m at ##.# h";RL;RLDB;LT
 2060 PRINT USING " Phase delay of resultant relative to ground-wave: ###.## degree";DPHAS*RTD
 2070 PRINT
 2080 PRINT "Do you need hardcopy? (Y/N)";
@@ -202,13 +202,13 @@
 2110 IF Q$="Y" OR Q$="y" THEN GOTO 2120
 2120 LPRINT
 2130 LPRINT
-2140 LPRINT USING " Transmitter power: ###.# kW   Frequency: ###.## kHz";P,FREQ
-2150 LPRINT USING " Latitude and longitude of transmitter: ###.##   ####.##";LATT*RTD,LONT*RTD
-2160 LPRINT USING " Latitude and longitude of receiver: ###.##   ####.##";LATR*RTD,LONR*RTD
+2140 LPRINT USING " Transmitter power: ###.# kW   Frequency: ###.## kHz";P;FREQ
+2150 LPRINT USING " Latitude and longitude of transmitter: ###.##   ####.##";LATT*RTD;LONT*RTD
+2160 LPRINT USING " Latitude and longitude of receiver: ###.##   ####.##";LATR*RTD;LONR*RTD
 2170 LPRINT USING " Ground range: ####.## km";GR
 2180 LPRINT
-2190 LPRINT USING " Ground-wave field strength: ###.#### mV/m   ####.## dBuV/m";G,GWS
-2200 LPRINT USING " Resultant strength: ###.#### mV/m  ####.## dBuV/m at ##.# h";RL,RLDB,LT
+2190 LPRINT USING " Ground-wave field strength: ###.#### mV/m   ####.## dBuV/m";G;GWS
+2200 LPRINT USING " Resultant strength: ###.#### mV/m  ####.## dBuV/m at ##.# h";RL;RLDB;LT
 2210 LPRINT USING " Phase delay of resultant relative to ground-wave: ###.## degree";DPHAS*RTD
 2220 LPRINT
 2230 PRINT
@@ -221,7 +221,7 @@
 2300 END
 2310 '
 2320 ' ground range calculation
-2330 *GRANGE
+2330 REM *GRANGE
 2340 DIFL=ABS(LONT-LONR)
 2350 IF DIFL>PAI THEN DIFL=2*PAI-DIFL
 2360 CACOS=SIN(LATT)*SIN(LATR)+COS(LATT)*COS(LATR)*COS(DIFL)
@@ -242,7 +242,7 @@
 2510 RETURN
 2520 '
 2530 '  reflection height subroutine
-2540 *REFH
+2540 REM *REFH
 2550 IF YR=1 THEN SSN=13 ELSE IF YR=2 THEN SSN=50 ELSE IF YR=3 THEN SSN=100
 2560 PHI=SSN+46-23*EXP(-.05*SSN)
 2570 FMIN=(.004*(1+.021*PHI)^2)^.25*1000
@@ -284,7 +284,7 @@
 2930 RETURN
 2940 '
 2950 '  focusing factor subroutine
-2960 *INTFF
+2960 REM *INTFF
 2970 FOR N=1 TO 16
 2980 IF HOPL=D(N) THEN GOTO 3150
 2990 NEXT N
@@ -316,7 +316,7 @@
 3250 RETURN
 3260 '
 3270 '  antenna factor subroutine
-3280 *INTAF
+3280 REM *INTAF
 3290 FOR N=1 TO 13
 3300 IF PSI=PS(N) THEN GOTO 3470
 3310 NEXT N
@@ -348,7 +348,7 @@
 3570 RETURN
 3580 '
 3590 '  ionospheric reflection coefficient subroutine
-3600 *INTRC
+3600 REM *INTRC
 3610 FOR N=1 TO 15
 3620 IF FC=FCS(N) THEN GOTO 3790
 3630 NEXT N
@@ -359,7 +359,7 @@
 3680 IF COSK=CSX(M) THEN GOTO 3730
 3690 NEXT M
 3700 FOR M=1 TO 10
-3710 IF CSX(M)<COSK AND COSK=<CSX(M+1) THEN GOTO 3750
+3710 IF CSX(M)<COSK AND COSK<=CSX(M+1) THEN GOTO 3750
 3720 NEXT M
 3730 RC=RCX(M,N)+(RCX(M,N+1)-RCX(M,N))*(FC-FCS(N))/(FCS(N+1)-FCS(N))
 3740 GOTO 3900
@@ -371,7 +371,7 @@
 3800 IF COSK=CSX(M) THEN GOTO 3850
 3810 NEXT M
 3820 FOR M=1 TO 10
-3830 IF CSX(M)<COSK AND COSK=<CSX(M+1) THEN GOTO 3870
+3830 IF CSX(M)<COSK AND COSK<=CSX(M+1) THEN GOTO 3870
 3840 NEXT M
 3850 RC=RCX(M,N)
 3860 GOTO 3900
@@ -459,7 +459,7 @@
 4680 DATA -0.67,-0.74,-0.82,-1.15,-1.8,-2.58,-3,-3.3,-3.75,-3.9,-3.98,-3.97,-3.85,-3.74,-3.64
 4690 '
 4700 ' Ground Wave field strength based on Rec. P.368
-4710 *GWAVE
+4710 REM *GWAVE
 4720 RESTORE 5330
 4730 FOR M=1 TO 10 :READ FG(M) :NEXT M
 4740 FOR N=1 TO 19 :READ DG(N) :NEXT N
@@ -470,25 +470,25 @@
 4790 READ GW(M,N)
 4800 NEXT N
 4810 NEXT M
-4820 GOTO *INTGW
+4820 GOTO 5000 REM *INTGW
 4830 RESTORE 5470
 4840 FOR M=1 TO 10
 4850 FOR N=1 TO 19
 4860 READ GW(M,N)
 4870 NEXT N
 4880 NEXT M
-4890 GOTO *INTGW
+4890 GOTO 5000 REM *INTGW
 4900 RESTORE 5580
 4910 FOR M=1 TO 10
 4920 FOR N=1 TO 19
 4930 READ GW(M,N)
 4940 NEXT N
 4950 NEXT M
-4960 GOTO *INTGW
+4960 GOTO 5000 REM *INTGW
 4970 GWS=GWS+10*LOG(P)/LOG(10)
 4980 RETURN
 4990 '
-5000 *INTGW
+5000 REM *INTGW
 5010 FOR N=1 TO 19
 5020 IF GR=DG(N) THEN GOTO 5200
 5030 NEXT N

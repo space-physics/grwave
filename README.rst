@@ -10,6 +10,8 @@ python-grwave
 
 Python for ITU P.368: Ground-wave propagation curves for frequencies between 10 kHz and 30 MHz
 
+`Original code <https://www.itu.int/en/ITU-R/study-groups/rsg3/Pages/iono-tropo-spheric.aspx>`_
+
 .. image:: data/fs.png
 
 .. contents::
