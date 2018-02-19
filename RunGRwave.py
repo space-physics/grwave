@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Simple groundwave example, assuming uniform ground parameters"""
 import subprocess
+import io
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -22,7 +23,7 @@ wls = {'freqMHz': 0.89,
 
 fin = Path('wls.asc')
 
-fin.write_text(
+strin = (
        f'freq {wls["freqMHz"]}\n'
        f'sigma {wls["sigma"]}\n'
        f'epslon {wls["epslon"]}\n'
@@ -34,10 +35,10 @@ fin.write_text(
 
 fout = fin.with_suffix('.out')
 
-with fin.open('r') as i, fout.open('w') as o:
-    subprocess.check_call('./grwave',stdin=i,stdout=o)
+
+out = subprocess.check_output('./grwave', input=strin, universal_newlines=True)
 # %%
-data = pd.read_csv(fout, sep='\s+',index_col=0,
+data = pd.read_csv(io.StringIO(out), sep='\s+',index_col=0,
                    skiprows=31, names=['fs','pathloss'])
 
 data.dropna(how='all',axis=0,inplace=True)
@@ -45,8 +46,10 @@ data = data[~data.index.duplicated(keep='last')]
 
 data['fs'] *= np.sqrt(wls['txwatt']/TXW0) * 0.5
 # %%
+d_km = data.index.values.astype(float)
+
 ax = figure().gca()
-data['fs'].plot(ax=ax)
+ax.plot(d_km, data['fs'].values)
 ax.set_xlabel('distance [km]')
 ax.set_ylabel('field strength mV/m')
 ax.axhline(4,color='red',linestyle='--')
