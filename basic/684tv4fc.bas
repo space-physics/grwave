@@ -13,7 +13,7 @@
 220 '                                       (parabolic D/E layer model)
 230 '
 240 CLS
-250 #INCLUDE "windows.bi"
+250 REM #INCLUDE "windows.bi"
 260 DEFDBL A-C,E,G-H,O-Z
 270 PAI=3.14159265#
 280 VEL=2.99792458#*10^5
@@ -33,7 +33,7 @@
 420 LATT=LATT*DTR: LONT=LONT*DTR: LATR=LATR*DTR: LONR=LONR*DTR
 430 '
 440 ' ground range calculation
-450 GOSUB *GRANGE
+450 GOSUB 2570 REM *GRANGE
 460 PRINT
 470 PRINT USING "Ground range: ####.## km";GR
 480 IF GR<=4000 THEN GOTO 530
@@ -49,7 +49,7 @@
 580 INPUT "input ground condition at mid-point, 1 for sea water or                                                              2 for land or                                                                   3 for dry ground";GCM
 590 '
 600 '  ground-wave
-610 GOSUB *GWAVE
+610 GOSUB 4950 REM *GWAVE
 620 G=10^(GWS/20)*.001
 630 '
 640 INPUT "input solar activity epoch, 1 for minimum sunspot number or                                                 2 for medium sunspot number or                                                  3 for maximum sunspot number";YR
@@ -176,7 +176,7 @@
 1850 NEXT K
 1860 '
 1870 '  ground-wave and resultant field strength
-1880 GOSUB *GWAVE
+1880 GOSUB 4950 REM *GWAVE
 1890 G=10^(GWS/20)*.001
 1900 '
 1910 DPH1=DPH1*DTR :DPH2=DPH2*DTR
@@ -245,7 +245,7 @@
 2540 END
 2550 '
 2560 ' ground range calculation
-2570 *GRANGE
+2570 REM *GRANGE
 2580 DIFL=ABS(LONT-LONR)
 2590 IF DIFL>PAI THEN DIFL=2*PAI-DIFL
 2600 CACOS=SIN(LATT)*SIN(LATR)+COS(LATT)*COS(LATR)*COS(DIFL)
@@ -483,7 +483,7 @@
 4920 DATA -0.67,-0.74,-0.82,-1.15,-1.8,-2.58,-3,-3.3,-3.75,-3.9,-3.98,-3.97,-3.85,-3.74,-3.64
 4930 '
 4940 ' Ground Wave field strength based on Rec. P.368
-4950 *GWAVE
+4950 REM *GWAVE
 4960 RESTORE 5570
 4970 FOR M=1 TO 10 :READ FG(M) :NEXT M
 4980 FOR N=1 TO 19 :READ DG(N) :NEXT N
