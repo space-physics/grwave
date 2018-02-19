@@ -12,7 +12,7 @@
 210 REM  4000 km at frequencies between 40 and 500 kHz.
 220 REM                                       (parabolic D/E layer model)
 230 REM
-240 CLS
+240 REM CLS
 250 REM #INCLUDE "windows.bi"
 260 DEFDBL A-C,E,G-H,O-Z
 270 PAI=3.14159265#
@@ -21,7 +21,7 @@
 300 RE=6367*4/3
 310 DIM F(8),D(16),FG(10),DG(19),GW(10,19),FF(8,16),PS(13),AF(8,13),FCS(15),CSX(11),RCX(11,15),LT(2000),FS(2000),DPHAS(2000)
 320 REM
-330 CLS 3
+330 REM CLS 3
 340 PRINT
 350 INPUT "input radiation power in kW";P
 360 INPUT "input operating frequency in kHz";FREQ
