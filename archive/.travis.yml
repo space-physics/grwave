@@ -35,4 +35,3 @@ after_success:
   pytest --cov --cov-config=setup.cfg;
   coveralls;
   fi
-

@@ -24,4 +24,3 @@ install:
 - sh: make
 
 test_script: pytest -rsv
-

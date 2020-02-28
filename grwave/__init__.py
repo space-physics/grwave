@@ -1,1 +1,1 @@
-from .base import grwave  # noqa: F401
+from .base import grwave

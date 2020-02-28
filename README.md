@@ -1,15 +1,12 @@
-[![Travis-CI](https://travis-ci.org/scivision/grwave.svg?branch=master)](https://travis-ci.org/scivision/grwave)
-[![Coverage](https://coveralls.io/repos/github/scivision/grwave/badge.svg?branch=master)](https://coveralls.io/github/scivision/grwave?branch=master)
-[![Build status](https://ci.appveyor.com/api/projects/status/uu30h9akapgk9bc7?svg=true)](https://ci.appveyor.com/project/scivision/grwave)
-
 # GRWave groundwave propagation
 
+![ci](https://github.com/space-physics/grwave/workflows/ci/badge.svg)
 
 Python for ITU P.368: Ground-wave propagation curves for frequencies between 10 kHz and 30 MHz.
 
 [Original code](https://www.itu.int/en/ITU-R/study-groups/rsg3/Pages/iono-tropo-spheric.aspx)
 
-More serious needs for LF propagation modeling should consider modern software like SPAWAR 
+More serious needs for LF propagation modeling should consider modern software like SPAWAR
 [LWPC](https://www.ann-geophys.net/31/765/2013/angeo-31-765-2013.pdf)
 since for communications circuits, signal strength is just one part of a complex system.
 Other necessary dominant factors include:
@@ -17,13 +14,13 @@ Other necessary dominant factors include:
 * ITU-R [P.372](https://www.itu.int/rec/R-REC-P.372/en) Radio circuit noise
 * ITU-R [F.1487](https://www.itu.int/rec/R-REC-F.1487-0-200005-I/en) Ionospheric circuit simultation. Even if you only want groundwave, the ionospheric path in general interferes with the groundwave path.
 
-
 ![image](data/fs.png)
 
-## Install 
-This also compiles the Fortran code using `gfortran`:
+## Install
 
-    python -m pip install -e .
+```sh
+pip install -e .
+```
 
 ## Usage
 
@@ -36,9 +33,9 @@ parameters into GRWAVE from Python. No files are used, just
 ## Ground conductivity
 
 Serious use of this would involve incremental runs with conductivity.
-To start assume uniform ground conductivity for the 
-[United States](https://www.fcc.gov/media/radio/m3-ground-conductivity-map) 
-or 
+To start assume uniform ground conductivity for the
+[United States](https://www.fcc.gov/media/radio/m3-ground-conductivity-map)
+or
 [world atlas](http://hamwaves.com/ground/en/index.html).
 
 ### Variables
@@ -52,7 +49,7 @@ ANS: [R] The refractivity of the troposphere at the surface of the earth in N-un
 HSCALE:[R] The scale height of the troposphere in kilometres. Default HSCALE = 7.35.
 
 IPOLRN:[I] A code number for the polarization. Default IPOLRN = 1.
-* 1 vertical polarization 
+* 1 vertical polarization
 * 2 horizontal polarization
 
 FREQ: [R] The frequency in MHz. Default FREQ = 1.0.
@@ -67,9 +64,9 @@ DMAX: [R] The maximum range in kilometres.  Default DMAX = 200.0.
 
 DSTEP:[R] The range step. See LOGLIN for further explanation.  Default DSTEP = 10.0.
 
-LOGLIN:[I] If LOGLIN = 0 then DSTEP, the range step is added to the range in geometrical and extended flat earth calculation regions and subtracted in the residue series regions. 
-If LOGLIN = 1 then the new distance is computed by multiplying or dividing the previous distance by DSTEP. In this case, DSTEP is chosen to give a fixed number of points per logarithmic decade. 
-If N points per logarithmic decade are desired, DSTEP is equal to 10 to the power (1/N). 
+LOGLIN:[I] If LOGLIN = 0 then DSTEP, the range step is added to the range in geometrical and extended flat earth calculation regions and subtracted in the residue series regions.
+If LOGLIN = 1 then the new distance is computed by multiplying or dividing the previous distance by DSTEP. In this case, DSTEP is chosen to give a fixed number of points per logarithmic decade.
+If N points per logarithmic decade are desired, DSTEP is equal to 10 to the power (1/N).
 Default LOGLIN = 0.
 
 [Note: In the residue series region, the calculations begin at DMAX
@@ -81,7 +78,7 @@ region and 100 points in the flat earth region. These limits may be
 expanded by compiling the source code after modification of the
 appropriate dimension statements.]
 
-IG: [I] If IG = -1 or 0, the field is calculated at long distances using the residue series formulation. If IG = 0 or 1, the field is calculated at short distances using the geometric optics or extended flat earth formulation. 
+IG: [I] If IG = -1 or 0, the field is calculated at long distances using the residue series formulation. If IG = 0 or 1, the field is calculated at short distances using the geometric optics or extended flat earth formulation.
 Default IG = 0.
 
 JHT: [I] A variable which determines which combination of receiver antenna heights (HR(LR) LR=1,JR) and transmitter heights

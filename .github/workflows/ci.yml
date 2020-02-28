@@ -1,0 +1,43 @@
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - run: pip install cmake
+    - run: sudo apt install -yq --no-install-recommends gfortran
+    - run: pip install .[tests,lint]
+    - run: flake8
+    - run: mypy .
+    - run: pytest
+      working-directory: tests
+
+  macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - run: brew install gcc
+    - run: pip install .[tests]
+    - run: pytest
+      working-directory: tests
+
+  windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - run: pip install .[tests]
+    - run: pytest
+      working-directory: tests

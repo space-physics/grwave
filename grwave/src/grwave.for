@@ -6,11 +6,11 @@ C*                                                                     *
 C***********************************************************************
 C
 C================================================================
-C=         MODIFIED FOR MICROSOFT FORTRAN VERSION 4.0           = 
+C=         MODIFIED FOR MICROSOFT FORTRAN VERSION 4.0           =
 C=         FOR MS-DOS PERSONAL COMPUTERS                        =
 C=          July 1988/10DEC88-jfc                               =
 C=          CCIR United States Study Group 5                    =
-C=          Dr. John F. Cavanagh                                =   
+C=          Dr. John F. Cavanagh                                =
 C=          Ms. Sheila A. Thurston                              =
 C=          Naval Surface Warfare Center                        =
 C=          Code F405                                           =
@@ -245,7 +245,7 @@ C ((LT=LR,JR),LR=1,JR).
    40     DM(LR,LT)=DMAX
       IF(IDEBUG.GE.1)WRITE(6,10000)(HRR(LR),LR=1,JR)
 10000 FORMAT('0TERMINAL HEIGHTS IN METRES'/' HRR=',7E15.7/(4X,7E15.7)
-     1 /' GRWAVE-242')    
+     1 /' GRWAVE-242')
       IF(IDEBUG.GE.1)WRITE(6,11000)(HTT(LT),LT=1,JT)
 11000 FORMAT(' HTT=',7E15.7/(4X,7E15.7) /' GRWAVE-245,259')
 C COMPUTE MODIFIED HEIGHTS USING EARTH FLATTENING TRANSFORMATION.
@@ -543,7 +543,7 @@ C     IF(IDEBUG.EQ.2)PRINT*,'TERM',TERM,'H1(M)',H1(M) ,'TPOINT-524'
         EPS=ABS2(TERM/H1(M))
         IF(EPS.LT.1.D-11)RETURN
    60   CONTINUE
-      IF(IDEBUG.GE.1)WRITE(6,2000)TERM,M,H1(M) 
+      IF(IDEBUG.GE.1)WRITE(6,2000)TERM,M,H1(M)
  2000 FORMAT(' TERM=(',E14.7,',',E14.7,')   H1(',I1,')=(',E14.7
      1,',',E14.7,')' ' TPOINT-528')
 
@@ -837,7 +837,7 @@ C
       LOGICAL LARGE
       COMPLEX*16 FAC,DP(4),XI,PSI0,Z0T(1),ZXI,Z0(1),ZPSI,PHINT,
      1P0(9),H1(9),TERM,P,F,DF,AKI,XIT,PINT,PSIT,P0T,D1P,D2P,FID(9)
-      COMMON /BUGGER/N,IDEBUG,AK,AK2,AKI /PEES/P,DP /PEXCIT/P0,FID  
+      COMMON /BUGGER/N,IDEBUG,AK,AK2,AKI /PEES/P,DP /PEXCIT/P0,FID
      1/AIRYS/AS(10),ASD(10) /HCHITE/HCH(9)
       EXTERNAL ZXI,ZPSI
 C
@@ -1462,7 +1462,7 @@ C********************
         IF(LT.LE.JT)GOTO 70
    90   CONTINUE
       IF(IDEBUG.LE.1)GOTO 110
-C     PRINT*,'RESIDH-1408' 
+C     PRINT*,'RESIDH-1408'
       DO 100 M3=1,3
         M2=3*M3
         M1=M2-2
@@ -1657,7 +1657,7 @@ C
             IF(ZI.LT.0.0D0)W=2.0D0*CDEXP(-A2)-W
       ELSE IF(CZ.EQ.0.0D0) THEN
                   W=(1.0D0,0.0D0)
-      ELSE 
+      ELSE
         TERM=(0.0D0,1.128379D0)*Z
         SUM=TERM
         W=SUM
@@ -1689,7 +1689,7 @@ C
  3000   FORMAT(' NO CONVERGENCE IN W' ,' W(Z)-1603,1630')
    40   IF(TYPE) THEN
            W=CDEXP(-A2)*(1.0D0+W)
-         ELSE  
+         ELSE
            W=CDEXP(-A2)+W
          ENDIF
       ENDIF
@@ -2871,4 +2871,3 @@ C Stop on EOF or an unrecognised word                                  *
       GOTO 70
 
       END SUBROUTINE RDDLST
-
