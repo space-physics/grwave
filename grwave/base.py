@@ -1,6 +1,7 @@
 from pathlib import Path
 import subprocess
 import io
+import os
 import pandas as pd
 import numpy as np
 import shutil
@@ -12,12 +13,19 @@ build_dir = R / "build"
 TXW0 = 1e3  # ITU assumes 1kW power
 CORR = 0.5
 
+ninja = shutil.which("ninja")
+
 grwave_exe = shutil.which("grwave.bin", path=str(build_dir))
 if not grwave_exe:
     if shutil.which("cmake"):
-        subprocess.run(["cmake", "-S", str(src_dir), "-B", str(build_dir)])
+        opts = []
+        if ninja:
+            opts = ["-G", "Ninja"]
+        elif os.name == "nt":
+            opts = ["-G", "MinGW Makefiles", "-DCMAKE_SH=CMAKE_SH-NOTFOUND"]
+        subprocess.run(["cmake", "-S", str(src_dir), "-B", str(build_dir)] + opts)
         subprocess.run(["cmake", "--build", str(build_dir)])
-    elif shutil.which("meson") and shutil.which("ninja"):
+    elif shutil.which("meson") and ninja:
         subprocess.run(["meson", str(src_dir), str(build_dir)])
         subprocess.run(["ninja", "-C", str(build_dir)])
 grwave_exe = shutil.which("grwave.bin", path=str(build_dir))
